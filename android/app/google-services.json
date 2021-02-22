@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "3056341095",
+    "project_id": "updstarter",
+    "storage_bucket": "updstarter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:3056341095:android:ec3fa6ce45fbb53f0044c2",
+        "android_client_info": {
+          "package_name": "edu.updstarter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "3056341095-161sshdpesjmhane7f8gea1ca1ma9v3a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPVSW9z3mPWC0Hcjptvzz2VXv1lXWCr5w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "3056341095-161sshdpesjmhane7f8gea1ca1ma9v3a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
