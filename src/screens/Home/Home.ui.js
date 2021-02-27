@@ -81,7 +81,12 @@ const Home = () => {
       <Input
         placeholder="Your note"
         value={writeNote}
-        onChangeText={setWriteNote}
+        onChangeText={(e) => {
+          if (isUpdate.status && e.length === 0) {
+            setIsUpdate({ status: false, id: null });
+          }
+          setWriteNote(e);
+        }}
         label="Note"
       />
       <BtnContainer>
