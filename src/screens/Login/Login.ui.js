@@ -25,8 +25,8 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleSignInLoading, setIsGoogleSignInLoading] = useState(false);
   const [userCredentials, setUserCredentials] = useState({
-    email: 'carions46@gmail.com',
-    password: 'p@ssw0rd',
+    email: '',
+    password: '',
   });
 
   const createUser = () => {
