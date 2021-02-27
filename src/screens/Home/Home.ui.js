@@ -52,7 +52,6 @@ const Home = () => {
       accessoryRight={() => renderUIAction(item.id)}
       onPress={() => {
         setIsUpdate({ status: true, id: item.id });
-        console.log(isUpdate);
         setWriteNote(item.note);
       }}
     />
