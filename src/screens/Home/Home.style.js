@@ -1,7 +1,6 @@
 import styled from '@emotion/native';
+import { Text, Button, List } from '@ui-kitten/components';
 
-import { Text, Input, Button, List, ListItem } from '@ui-kitten/components';
-import { RectButton } from 'react-native-gesture-handler';
 export const Title = styled(Text)`
   font-size: 24px;
   font-weight: bold;

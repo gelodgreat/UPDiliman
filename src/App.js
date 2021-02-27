@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { ApplicationProvider } from '@ui-kitten/components';
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import AuthStack from './routes';
 import * as eva from '@eva-design/eva';
 import Config from 'react-native-config';
 import { GoogleSignin } from '@react-native-community/google-signin';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
 const App = () => {
   useEffect(() => {
@@ -14,11 +15,14 @@ const App = () => {
   }, []);
 
   return (
-    <ApplicationProvider {...eva} theme={eva.light}>
-      <NavigationContainer>
-        <AuthStack />
-      </NavigationContainer>
-    </ApplicationProvider>
+    <>
+      <IconRegistry icons={EvaIconsPack} />
+      <ApplicationProvider {...eva} theme={eva.light}>
+        <NavigationContainer>
+          <AuthStack />
+        </NavigationContainer>
+      </ApplicationProvider>
+    </>
   );
 };
 
