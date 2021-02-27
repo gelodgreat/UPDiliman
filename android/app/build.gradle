@@ -132,12 +132,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    def appVersionCode = project.env.get("ANDROID_VERSION_CODE").toInteger() 
 
     defaultConfig {
         applicationId "edu.updstarter"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
+        versionCode appVersionCode
         versionName "1.0"
         multiDexEnabled true
     }

@@ -14,6 +14,7 @@ export const Container = styled.View`
 export const Title = styled(Text)`
   font-size: 24px;
   font-weight: bold;
+  margin-left: 24px;
 `;
 
 export const GoogleSigninBtn = styled(GoogleSigninButton)`
@@ -40,4 +41,10 @@ export const BottomContainer = styled.View`
 
 export const BottomText = styled(Text)`
   font-size: 12px;
+`;
+
+export const LoadingContainer = styled.View`
+  margin-top: 12px;
+  justify-content: center;
+  align-items: center;
 `;

@@ -14,19 +14,23 @@ import {
   LoginButton,
   BottomContainer,
   BottomText,
+  LoadingContainer,
 } from './Login.style';
 import { useState } from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
-import { Icon } from '@ui-kitten/components';
+import { Icon, Spinner } from '@ui-kitten/components';
 
 const Login = () => {
   const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleSignInLoading, setIsGoogleSignInLoading] = useState(false);
   const [userCredentials, setUserCredentials] = useState({
-    email: '',
-    password: '',
+    email: 'carions46@gmail.com',
+    password: 'p@ssw0rd',
   });
 
   const createUser = () => {
+    setIsLoading(true);
     auth()
       .createUserWithEmailAndPassword(
         userCredentials.email,
@@ -34,17 +38,20 @@ const Login = () => {
       )
       .then(() => {
         navigation.navigate('Home');
+        setIsLoading(false);
       })
       .catch((error) => {
         if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
           loginUser();
         } else if (error.code === 'auth/invalid-email') {
           console.log('That email address is invalid!');
+
+          setIsLoading(false);
         } else {
           setUserCredentials({ email: '', password: '' });
-        }
 
+          setIsLoading(false);
+        }
         console.error(error);
       });
   };
@@ -57,9 +64,11 @@ const Login = () => {
       )
       .then(() => {
         navigation.navigate('Home');
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setIsLoading(false);
       });
   };
 
@@ -69,6 +78,7 @@ const Login = () => {
   };
 
   async function onGoogleButtonPress() {
+    setIsGoogleSignInLoading(true);
     // Get the users ID token
     const { idToken } = await GoogleSignin.signIn();
     // Create a Google credential with the token
@@ -85,7 +95,7 @@ const Login = () => {
 
   return (
     <Container>
-      <Title>Welcome to React Native with Firebase!</Title>
+      <Title>Welcome to Your Notes App! Making your days productive.</Title>
 
       <InputContainer>
         <TextInput
@@ -104,14 +114,35 @@ const Login = () => {
           onChangeText={(e) => {
             setUserCredentials({ ...userCredentials, password: e });
           }}></TextInput>
-        <LoginButton onPress={() => createUser()}>Login</LoginButton>
+        {!isLoading ? (
+          <LoginButton onPress={() => createUser()}>Login</LoginButton>
+        ) : (
+          <LoadingContainer>
+            <Spinner />
+          </LoadingContainer>
+        )}
       </InputContainer>
 
-      <GoogleSigninBtn
-        size={GoogleSigninButton.Size.Wide}
-        onPress={() => {
-          onGoogleButtonPress().then(() => navigation.navigate('Home'));
-        }}></GoogleSigninBtn>
+      {!isGoogleSignInLoading ? (
+        <GoogleSigninBtn
+          size={GoogleSigninButton.Size.Wide}
+          onPress={() => {
+            onGoogleButtonPress()
+              .then(() => {
+                setIsGoogleSignInLoading(false);
+                navigation.navigate('Home');
+              })
+              .catch((error) => {
+                console.log(error);
+                setIsGoogleSignInLoading(false);
+              });
+          }}
+        />
+      ) : (
+        <LoadingContainer>
+          <Spinner />
+        </LoadingContainer>
+      )}
 
       <BottomContainer>
         <BottomText>Powered by: Diliman Solutions Challenge</BottomText>

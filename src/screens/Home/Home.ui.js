@@ -97,6 +97,7 @@ const Home = () => {
       <Input
         placeholder="Your note"
         value={writeNote}
+        multiline={true}
         onChangeText={(e) => {
           if (isUpdate.status && e.length === 0) {
             setIsUpdate({ status: false, id: null });
