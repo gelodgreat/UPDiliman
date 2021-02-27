@@ -44,7 +44,6 @@ export const BottomText = styled(Text)`
 `;
 
 export const LoadingContainer = styled.View`
-  margin-top: 12px;
   justify-content: center;
   align-items: center;
 `;

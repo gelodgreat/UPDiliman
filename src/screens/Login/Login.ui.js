@@ -17,7 +17,7 @@ import {
   LoadingContainer,
 } from './Login.style';
 import { useState } from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
+import { TouchableWithoutFeedback, ToastAndroid } from 'react-native';
 import { Icon, Spinner } from '@ui-kitten/components';
 
 const Login = () => {
@@ -30,46 +30,63 @@ const Login = () => {
   });
 
   const createUser = () => {
-    setIsLoading(true);
-    auth()
-      .createUserWithEmailAndPassword(
-        userCredentials.email,
-        userCredentials.password,
-      )
-      .then(() => {
-        navigation.navigate('Home');
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        if (error.code === 'auth/email-already-in-use') {
-          loginUser();
-        } else if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
+    try {
+      if (userCredentials.email && userCredentials.password) {
+        setIsLoading(true);
+        auth()
+          .createUserWithEmailAndPassword(
+            userCredentials.email,
+            userCredentials.password,
+          )
+          .then(() => {
+            navigation.navigate('Home');
+            setIsLoading(false);
+          })
+          .catch((error) => {
+            if (error.code === 'auth/email-already-in-use') {
+              loginUser();
+            } else if (error.code === 'auth/invalid-email') {
+              console.log('That email address is invalid!');
+              setIsLoading(false);
+            } else {
+              setUserCredentials({ email: '', password: '' });
 
-          setIsLoading(false);
-        } else {
-          setUserCredentials({ email: '', password: '' });
-
-          setIsLoading(false);
-        }
-        console.error(error);
-      });
+              setIsLoading(false);
+            }
+            console.error(error);
+          });
+      } else {
+        ToastAndroid.showWithGravityAndOffset(
+          'Please input email and password!',
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,
+          25,
+          50,
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const loginUser = () => {
-    auth()
-      .signInWithEmailAndPassword(
-        userCredentials.email,
-        userCredentials.password,
-      )
-      .then(() => {
-        navigation.navigate('Home');
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsLoading(false);
-      });
+    try {
+      auth()
+        .signInWithEmailAndPassword(
+          userCredentials.email,
+          userCredentials.password,
+        )
+        .then(() => {
+          navigation.navigate('Home');
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          setIsLoading(false);
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const [secureTextEntry, setSecureTextEntry] = React.useState(true);
@@ -78,19 +95,33 @@ const Login = () => {
   };
 
   async function onGoogleButtonPress() {
-    setIsGoogleSignInLoading(true);
-    // Get the users ID token
-    const { idToken } = await GoogleSignin.signIn();
-    // Create a Google credential with the token
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-    // Sign-in the user with the credential
-    return auth().signInWithCredential(googleCredential);
+    try {
+      setIsGoogleSignInLoading(true);
+      // Get the users ID token
+      const { idToken } = await GoogleSignin.signIn();
+      // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      // Sign-in the user with the credential
+      return auth().signInWithCredential(googleCredential);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const renderIcon = (props) => (
     <TouchableWithoutFeedback onPress={toggleSecureEntry}>
       <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
     </TouchableWithoutFeedback>
+  );
+
+  const loadingIndicator = () => (
+    <>
+      {isLoading ? (
+        <LoadingContainer>
+          <Spinner />
+        </LoadingContainer>
+      ) : null}
+    </>
   );
 
   return (
@@ -114,13 +145,12 @@ const Login = () => {
           onChangeText={(e) => {
             setUserCredentials({ ...userCredentials, password: e });
           }}></TextInput>
-        {!isLoading ? (
-          <LoginButton onPress={() => createUser()}>Login</LoginButton>
-        ) : (
-          <LoadingContainer>
-            <Spinner />
-          </LoadingContainer>
-        )}
+        <LoginButton
+          appearance="outline"
+          onPress={() => createUser()}
+          accessoryRight={loadingIndicator}>
+          Login
+        </LoginButton>
       </InputContainer>
 
       {!isGoogleSignInLoading ? (
@@ -145,7 +175,7 @@ const Login = () => {
       )}
 
       <BottomContainer>
-        <BottomText>Powered by: Diliman Solutions Challenge</BottomText>
+        <BottomText>Powered by: Angelo Technologies</BottomText>
       </BottomContainer>
     </Container>
   );
