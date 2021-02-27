@@ -29,6 +29,16 @@ const Login = () => {
     password: '',
   });
 
+  const toast = (message) => {
+    return ToastAndroid.showWithGravityAndOffset(
+      message,
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+      25,
+      50,
+    );
+  };
+
   const createUser = () => {
     try {
       if (userCredentials.email && userCredentials.password) {
@@ -39,7 +49,6 @@ const Login = () => {
             userCredentials.password,
           )
           .then(() => {
-            navigation.navigate('Home');
             setIsLoading(false);
           })
           .catch((error) => {
@@ -50,19 +59,11 @@ const Login = () => {
               setIsLoading(false);
             } else {
               setUserCredentials({ email: '', password: '' });
-
               setIsLoading(false);
             }
-            console.error(error);
           });
       } else {
-        ToastAndroid.showWithGravityAndOffset(
-          'Please input email and password!',
-          ToastAndroid.SHORT,
-          ToastAndroid.CENTER,
-          25,
-          50,
-        );
+        toast('Please input email and password!');
       }
     } catch (error) {
       console.log(error);
@@ -77,11 +78,10 @@ const Login = () => {
           userCredentials.password,
         )
         .then(() => {
-          navigation.navigate('Home');
           setIsLoading(false);
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          toast('Please use Google Sign In instead!');
           setIsLoading(false);
         });
     } catch (error) {
@@ -102,7 +102,9 @@ const Login = () => {
       // Create a Google credential with the token
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
       // Sign-in the user with the credential
-      return auth().signInWithCredential(googleCredential);
+
+      await auth().signInWithCredential(googleCredential);
+      setIsGoogleSignInLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -156,17 +158,7 @@ const Login = () => {
       {!isGoogleSignInLoading ? (
         <GoogleSigninBtn
           size={GoogleSigninButton.Size.Wide}
-          onPress={() => {
-            onGoogleButtonPress()
-              .then(() => {
-                setIsGoogleSignInLoading(false);
-                navigation.navigate('Home');
-              })
-              .catch((error) => {
-                console.log(error);
-                setIsGoogleSignInLoading(false);
-              });
-          }}
+          onPress={onGoogleButtonPress}
         />
       ) : (
         <LoadingContainer>

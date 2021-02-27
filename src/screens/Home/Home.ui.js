@@ -63,9 +63,7 @@ const Home = () => {
   );
 
   const logout = () => {
-    auth()
-      .signOut()
-      .then(() => navigation.navigate('Login'));
+    auth().signOut();
   };
 
   useEffect(() => {
