@@ -8,16 +8,21 @@ import {
   AddButton,
   BtnContainer,
   RemoveButton,
+  LogoutButton,
+  LogoutContainer,
 } from './Home.style';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import { useEffect } from 'react';
+import { TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const Home = () => {
   const [writeNote, setWriteNote] = useState('');
   const [notes, setNotes] = useState([]);
   const user = auth().currentUser;
   const [isUpdate, setIsUpdate] = useState({ id: null, status: false });
+  const navigation = useNavigation();
 
   const addNote = () => {
     database().ref(`/notes/${user.uid}`).push().set({
@@ -57,6 +62,12 @@ const Home = () => {
     />
   );
 
+  const logout = () => {
+    auth()
+      .signOut()
+      .then(() => navigation.navigate('Login'));
+  };
+
   useEffect(() => {
     const onValueChange = database()
       .ref(`/notes/${user.uid}`)
@@ -77,6 +88,11 @@ const Home = () => {
 
   return (
     <Container>
+      <LogoutContainer>
+        <TouchableOpacity onPress={logout}>
+          <LogoutButton name="log-out" fill="#ef5350" />
+        </TouchableOpacity>
+      </LogoutContainer>
       <Title>Your One Stop Notes</Title>
       <Input
         placeholder="Your note"

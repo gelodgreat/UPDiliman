@@ -1,5 +1,5 @@
 import styled from '@emotion/native';
-import { Text, Button, List } from '@ui-kitten/components';
+import { Text, Button, List, Icon } from '@ui-kitten/components';
 
 export const Title = styled(Text)`
   font-size: 24px;
@@ -28,3 +28,14 @@ export const BtnContainer = styled.View`
 `;
 
 export const RemoveButton = styled(Button)``;
+export const LogoutButton = styled(Icon)`
+  width: 24px;
+  height: 24px;
+`;
+export const LogoutContainer = styled.View`
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-right: 8px;
+  margin-top: 8px;
+`;

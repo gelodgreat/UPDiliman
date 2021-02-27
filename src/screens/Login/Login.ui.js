@@ -25,6 +25,44 @@ const Login = () => {
     email: '',
     password: '',
   });
+
+  const createUser = () => {
+    auth()
+      .createUserWithEmailAndPassword(
+        userCredentials.email,
+        userCredentials.password,
+      )
+      .then(() => {
+        navigation.navigate('Home');
+      })
+      .catch((error) => {
+        if (error.code === 'auth/email-already-in-use') {
+          console.log('That email address is already in use!');
+          loginUser();
+        } else if (error.code === 'auth/invalid-email') {
+          console.log('That email address is invalid!');
+        } else {
+          setUserCredentials({ email: '', password: '' });
+        }
+
+        console.error(error);
+      });
+  };
+
+  const loginUser = () => {
+    auth()
+      .signInWithEmailAndPassword(
+        userCredentials.email,
+        userCredentials.password,
+      )
+      .then(() => {
+        navigation.navigate('Home');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const [secureTextEntry, setSecureTextEntry] = React.useState(true);
   const toggleSecureEntry = () => {
     setSecureTextEntry(!secureTextEntry);
@@ -66,7 +104,7 @@ const Login = () => {
           onChangeText={(e) => {
             setUserCredentials({ ...userCredentials, password: e });
           }}></TextInput>
-        <LoginButton onPress={() => {}}>Login</LoginButton>
+        <LoginButton onPress={() => createUser()}>Login</LoginButton>
       </InputContainer>
 
       <GoogleSigninBtn
