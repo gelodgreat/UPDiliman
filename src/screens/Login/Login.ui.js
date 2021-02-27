@@ -126,7 +126,7 @@ const Login = () => {
 
   return (
     <Container>
-      <Title>Welcome to Your Notes App! Making your days productive.</Title>
+      <Title>Welcome to Your Notes App, Making your days productive!</Title>
 
       <InputContainer>
         <TextInput
