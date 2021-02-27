@@ -24,7 +24,8 @@ const Login = () => {
       <Button
         onPress={() => {
           onGoogleButtonPress().then(() => navigation.navigate('Home'));
-        }}>
+        }}
+      >
         Google Signin
       </Button>
     </View>

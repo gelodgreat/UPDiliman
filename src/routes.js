@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import Home from './screens/Home';
-import Login from './screens/Login';
+import { Home, Login } from './screens';
 
 const Stack = createStackNavigator();
 import auth from '@react-native-firebase/auth';
@@ -24,7 +23,8 @@ const AuthStack = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName={initializing && !user ? 'Login' : 'Home'}>
+      initialRouteName={initializing && !user ? 'Login' : 'Home'}
+    >
       {user && !initializing ? (
         <>
           <Stack.Screen name="Home" component={Home} />
