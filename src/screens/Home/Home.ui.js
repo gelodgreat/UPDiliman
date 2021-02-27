@@ -95,6 +95,7 @@ const Home = () => {
       </LogoutContainer>
       <Title>Your One Stop Notes</Title>
       <Input
+        textStyle={{ minHeight: 64 }}
         placeholder="Your note"
         value={writeNote}
         multiline={true}
@@ -104,7 +105,7 @@ const Home = () => {
           }
           setWriteNote(e);
         }}
-        label="Note"
+        label="Recording your Note"
       />
       <BtnContainer>
         <AddButton onPress={isUpdate.status ? updateNote : addNote}>
